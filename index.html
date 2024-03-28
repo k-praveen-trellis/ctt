@@ -87,7 +87,7 @@
         function copyToClipboard() {
             const outputText = document.getElementById("result").textContent;
             navigator.clipboard.writeText(outputText).then(function() {
-                alert('Copying to clipboard was successful!');
+                console.log("Copied Successfully.")
             }, function(err) {
                 alert('Could not copy text: ', err);
             });
