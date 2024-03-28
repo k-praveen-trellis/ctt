@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convert to Talk</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(120deg, #a6c0fe, #f68084);
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    h1 {
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    select, input, button, select option {
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 10px;
+        outline: none;
+        width: 250px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    button {
+        color: white;
+        background-color: #f68084;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #f56070;
+    }
+
+    #result {
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 20px;
+        width: 250px;
+        background-color: white;
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+    <h1>Convert to Talk</h1>
+    <select id="conversionType">
+        <option value="stringToBinary">String to Binary</option>
+        <option value="binaryToString">Binary to String</option>
+    </select>
+    <input type="text" id="inputValue" placeholder="Enter your value"/>
+    <div id="result"></div>
+    <button onclick="copyToClipboard()">Copy</button>
+
+    <script>
+        document.getElementById("inputValue").addEventListener("input", convert);
+        document.getElementById("conversionType").addEventListener("change", convert);
+    
+        function convert() {
+            const conversionType = document.getElementById("conversionType").value;
+            const inputValue = document.getElementById("inputValue").value;
+            let result = '';
+    
+            if (conversionType === "stringToBinary") {
+                result = inputValue.split('').map(function(char) {
+                    return char.charCodeAt(0).toString(2).padStart(8, '0');
+                }).join(' ');
+            } else {
+                result = inputValue.split(' ').map(function(bin) {
+                    return String.fromCharCode(parseInt(bin, 2));
+                }).join('');
+            }
+    
+            document.getElementById("result").textContent = result;
+        }
+    
+        function copyToClipboard() {
+            const outputText = document.getElementById("result").textContent;
+            navigator.clipboard.writeText(outputText).then(function() {
+                alert('Copying to clipboard was successful!');
+            }, function(err) {
+                alert('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
