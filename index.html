@@ -1,119 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convert to Talk</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(120deg, #a6c0fe, #f68084);
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        /* justify-content: center; */
-        flex-direction: column;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Chat Encrypted</title>
+    
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
-    h1 {
-        color: white;
-        margin-bottom: 20px;
-    }
+    <style>
+        body {
+            font-family: 'Poppins'; 
+            margin: 0px;
+            padding: 0px;
+        }
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 1px auto;
+            padding: 2em;
+            text-align: center;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+        #toggle {
+            border-radius: 10px;
+            border: solid;
+            background-color: rgb(240, 240, 240);
+            border-color: rgb(221, 221, 221);
+            width: fit-content;
+            cursor: pointer;
+            margin: 15px auto 10px auto;
+            padding: 10px;
+        }
 
-    select, button, select option {
-        padding: 10px;
-        margin: 10px 0;
-        border: none;
-        border-radius: 10px;
-        outline: none;
-        width: 250px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
+        #inputMessage {
+            width: 100%;
+            padding: 15px;
+            margin: 15px auto;
+            color: black;
+            background-color: rgb(219, 255, 250);
+            border: none;
+            border-radius: 10px;
+            max-height: 150px;
+            overflow-y: scroll;
+        }
 
-    button {
-        color: white;
-        background-color: #354655;
-        cursor: pointer;
-    }
+        #outputMessage {
+            width: 100%;
+            padding: 15px;
+            margin: 15px auto;
+            color: black;
+            background-color: rgb(245, 245, 245);
+            border: none;
+            border-radius: 10px;
+            max-height: 150px;
+            overflow-y: scroll;
+            word-wrap: break-word;
+        }
 
-    button:hover {
-        background-color: #03112b;
-    }
+        #copy {
+            border-radius: 10px;
+            border: solid;
+            background-color: rgb(72, 255, 148);
+            border-color: rgb(4, 248, 126);
+            width: fit-content;
+            cursor: pointer;
+            margin: 15px auto;
+            padding: 10px;
+            margin-right: 5px;
+        }
 
-    input {
-        padding: 10px;
-        margin: 10px 0;
-        border: none;
-        border-radius: 10px;
-        outline: none;
-        width: 90%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
+        #clear {
+            border-radius: 10px;
+            border: solid;
+            background-color: rgb(255, 151, 133);
+            border-color: rgb(255, 91, 62);
+            width: fit-content;
+            cursor: pointer;
+            margin: 15px auto;
+            margin-left: 5px;
+            padding: 10px;
+        }
 
-    #result {
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 20px;
-        width: 90%;
-        background-color: white;
-        word-wrap: break-word;
-        max-height: 250px;
-        overflow-y: scroll;
-    }
-</style>
-</head>
-<body>
-    <h1>Convert to Talk</h1>
-    <select id="conversionType">
-        <option value="stringToBinary">String to Binary</option>
-        <option value="binaryToString">Binary to String</option>
-    </select>
-    <input type="text" id="inputValue" placeholder="Enter your value"/>
-    <div id="result"></div>
-    <button onclick="copyToClipboard()">Copy</button>
-    <button onclick="clearContents()">Clear</button>
-
+        .hidden {
+            display: none;
+        }
+    </style>
     <script>
-        document.getElementById("inputValue").addEventListener("input", convert);
-        document.getElementById("conversionType").addEventListener("change", function() {
-            clearContents();
-            convert();
-        });
-    
-        function convert() {
-            const conversionType = document.getElementById("conversionType").value;
-            const inputValue = document.getElementById("inputValue").value;
-            let result = '';
-    
-            if (conversionType === "stringToBinary") {
-                result = inputValue.split('').map(function(char) {
-                    return char.charCodeAt(0).toString(2).padStart(8, '0');
-                }).join(' ');
-            } else {
-                result = inputValue.split(' ').map(function(bin) {
-                    return String.fromCharCode(parseInt(bin, 2));
-                }).join('');
-            }
-    
-            document.getElementById("result").textContent = result;
+        function convertStringToBinary(input) {
+            return input.split('').map(function(char) {
+                return char.charCodeAt(0).toString(2);
+            }).join(' ');
         }
 
-        function clearContents() {
-            document.getElementById("inputValue").value = '';
-            document.getElementById("result").textContent = '';
+        function convertBinaryToString(input) {
+            return input.split(' ').map(function(bin) {
+                return String.fromCharCode(parseInt(bin, 2));
+            }).join('');
         }
-    
+
+        function convertInput() {
+            var inputMessage = document.getElementById('inputMessage').value;
+            var outputMessage = document.getElementById('outputMessage');
+            if (isBinaryMode) {
+                outputMessage.value = convertBinaryToString(inputMessage);
+            } else {
+                outputMessage.value = convertStringToBinary(inputMessage);
+            }
+        }
+
+        var isBinaryMode = false;
+
+        function toggleConversion() {
+            var toggleBtn = document.getElementById('toggle');
+            isBinaryMode = !isBinaryMode;
+            toggleBtn.textContent = isBinaryMode ? 'Binary → String' : 'String → Binary';
+            document.getElementById('inputMessage').placeholder = isBinaryMode ? 'Enter Binary Message Here' : 'Enter String Message Here';
+            document.getElementById('outputMessage').placeholder = isBinaryMode ? 'Output String Message Here' : 'Output Binary Message Here';
+            clearMessages();
+        }
+
         function copyToClipboard() {
-            const outputText = document.getElementById("result").textContent;
+            const outputText = document.getElementById("outputMessage").textContent;
             navigator.clipboard.writeText(outputText).then(function() {
                 console.log("Copied Successfully.")
             }, function(err) {
                 alert('Could not copy text: ', err);
             });
         }
+
+        function clearMessages() {
+            document.getElementById('inputMessage').value = '';
+            document.getElementById('outputMessage').value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('toggle').addEventListener('click', toggleConversion);
+            document.getElementById('copy').addEventListener('click', copyToClipboard);
+            document.getElementById('clear').addEventListener('click', clearMessages);
+        });
     </script>
+</head>
+<body>
+    <div class="container">
+        <h1 id="heading">Shushhh! Talk Encrypted.</h1>
+        <div id="toggle">String → Binary</div>
+        <input type="text" id="inputMessage" placeholder="Enter String Message Here" oninput="convertInput()">
+        <input type="text" id="outputMessage" placeholder="Output Binary Message Here" disabled>
+        <button id="copy">Copy Message</button>
+        <button id="clear">Clear Message</button>
+    </div>
 </body>
 </html>
