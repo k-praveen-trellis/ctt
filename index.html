@@ -21,10 +21,9 @@
         .container {
             width: 90%;
             max-width: 1000px;
-            margin: 1px auto;
-            padding: 2em;
+            margin: 0 auto;
             text-align: center;
-            max-height: 80vh;
+            max-height: 100vh;
             overflow: hidden;
             font-family: 'Poppins', sans-serif;
         }
@@ -41,7 +40,7 @@
         }
 
         #inputMessage {
-            width: 100%;
+            width: 96%;
             padding: 15px;
             margin: 15px auto;
             color: black;
@@ -51,10 +50,16 @@
             max-height: 150px;
             overflow-y: scroll;
             font-family: 'Poppins', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #inputMessage::selection {
+            background-color: transparent;
         }
 
         #outputMessage {
-            width: 100%;
+            width: 96%;
             padding: 15px;
             margin: 15px auto;
             color: black;
@@ -158,7 +163,7 @@
         <h1 id="heading">Shushhh! Talk Encrypted.</h1>
         <div id="toggle">String → Binary</div>
         <input type="text" id="inputMessage" placeholder="Enter String Message Here" oninput="convertInput()">
-        <textarea id="outputMessage" placeholder="Output Binary Message Here" disabled rows="4"></textarea>
+        <textarea id="outputMessage" placeholder="Output Binary Message Here" disabled rows="3"></textarea>
         <button id="copy">Copy Message</button>
         <button id="clear">Clear Message</button>
     </div>
