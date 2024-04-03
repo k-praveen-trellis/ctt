@@ -34,12 +34,12 @@
 
     button {
         color: white;
-        background-color: #f68084;
+        background-color: #354655;
         cursor: pointer;
     }
 
     button:hover {
-        background-color: #f56070;
+        background-color: #03112b;
     }
 
     input {
@@ -74,10 +74,14 @@
     <input type="text" id="inputValue" placeholder="Enter your value"/>
     <div id="result"></div>
     <button onclick="copyToClipboard()">Copy</button>
+    <button onclick="clearContents()">Clear</button>
 
     <script>
         document.getElementById("inputValue").addEventListener("input", convert);
-        document.getElementById("conversionType").addEventListener("change", convert);
+        document.getElementById("conversionType").addEventListener("change", function() {
+            clearContents();
+            convert();
+        });
     
         function convert() {
             const conversionType = document.getElementById("conversionType").value;
@@ -95,6 +99,11 @@
             }
     
             document.getElementById("result").textContent = result;
+        }
+
+        function clearContents() {
+            document.getElementById("inputValue").value = '';
+            document.getElementById("result").textContent = '';
         }
     
         function copyToClipboard() {
