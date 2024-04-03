@@ -122,7 +122,7 @@
         }
 
         function copyToClipboard() {
-            const outputText = document.getElementById("outputMessage").textContent;
+            const outputText = document.getElementById("outputMessage").value;
             navigator.clipboard.writeText(outputText).then(function() {
                 console.log("Copied Successfully.")
             }, function(err) {
